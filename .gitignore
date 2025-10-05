@@ -1,0 +1,9 @@
+/vendor/
+/.env
+*.log
+*.zip
+*.xlsx
+*.csv
+*.txt
+.DS_Store
+node_modules/
