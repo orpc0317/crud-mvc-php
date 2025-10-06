@@ -1,7 +1,7 @@
 <?php
-require 'vendor/autoload.php';
-require_once 'models/UserModel.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
+use App\Models\UserModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
