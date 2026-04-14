@@ -21,8 +21,8 @@ class Router
     // Normalizar URI
     $uri = parse_url($uri, PHP_URL_PATH);
 
-    // Eliminar el prefijo del proyecto y "index.php"
-    $base = '/crud-mvc-php/public/index.php';
+    // Eliminar el prefijo del proyecto
+    $base = '/crud-mvc-php/public';
     if (strpos($uri, $base) === 0) {
       $uri = substr($uri, strlen($base));
     }

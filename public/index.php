@@ -1,24 +1,25 @@
 <?php
-// Carga automática de clases con Composer
 require_once __DIR__ . '/../vendor/autoload.php';
 
-// Importación de clases con namespace
-use App\Core\Router;
-use App\Controllers\UserController;
-use App\Controllers\ExportController;
+use App\Core\Database;
 
-$router = new Router();
+// Cargar rutas
+$router = require __DIR__ . '/../app/core/routes.php';
 
-// Rutas GET
-$router->get('/usuarios/ajax', [UserController::class, 'ajaxList']);
-$router->get('/exportar', [ExportController::class, 'exportCsv']);
+// Normalizar URI eliminando el prefijo dinámico del proyecto
+$scriptName = str_replace('\\', '/', $_SERVER['SCRIPT_NAME']);
+$requestUri = str_replace('\\', '/', $_SERVER['REQUEST_URI']);
 
-// Rutas POST (ejemplo)
-$router->post('/usuarios/crear', [UserController::class, 'create']);
+$basePath = rtrim(dirname($scriptName), '/');
+$path = parse_url($requestUri, PHP_URL_PATH);
 
-// Ejecutar el router
-$router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+$normalizedUri = $path;
 
-// Instanciación y ejecución
-$controller = new UserController();
-$controller->ajaxList(); // o el método que quieras probar
+if ($basePath !== '/' && strpos($path, $basePath) === 0) {
+    $normalizedUri = substr($path, strlen($basePath));
+}
+
+$normalizedUri = '/' . trim($normalizedUri, '/');
+
+// Ejecutar el router con la URI normalizada
+$router->dispatch($_SERVER['REQUEST_METHOD'], $normalizedUri);
